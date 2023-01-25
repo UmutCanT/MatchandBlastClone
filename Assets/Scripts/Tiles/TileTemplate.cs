@@ -8,5 +8,8 @@ public abstract class TileTemplate : ScriptableObject
     [SerializeField] TileTypes tileType;
     [SerializeField] Sprite tileSprite;
 
+    public Sprite TileSprite { get => tileSprite; set => tileSprite = value; }
+    public TileTypes TileType { get => tileType; set => tileType = value; }
+
     public abstract void Behaviour();
 }
