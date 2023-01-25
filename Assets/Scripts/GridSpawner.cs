@@ -9,7 +9,7 @@ public class GridSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        grid = new Grid(4,2, 10f);
+        grid = new Grid(4,2, 10f,  new Vector3(-20,0));
     }
 
     // Update is called once per frame
