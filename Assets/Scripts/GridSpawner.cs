@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class GridSpawner : MonoBehaviour
 {
-    Grid<int> intGrid;
-    Grid<bool> boolGrid;
+    Grid<Tile> tileGrid;
 
     // Start is called before the first frame update
     void Start()
-    {
-        intGrid = new Grid<int>(4,2, 10f,  new Vector3(70,0));
-        boolGrid = new Grid<bool>(10,10, 10f,  new Vector3(-40,0));
+    {      
+        tileGrid = new Grid<Tile>(10,10, 10f,  new Vector3(-40,-40), (Grid<Tile> g, int x, int y) => new Tile(g, x, y));
     }
 
     // Update is called once per frame
@@ -19,12 +17,37 @@ public class GridSpawner : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            intGrid.SetValue(Utils.GetMouseWorldPosition(), 25);
+            Vector3 position = Utils.GetMouseWorldPosition();
+            Tile  tile  = tileGrid.GetGridObject(position);
+            if (tile != null)
+            {
+                tile.AddValue(5);
+            }
         }
+    }
+}
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            Debug.Log(intGrid.GetValue(Utils.GetMouseWorldPosition()));
-        }
+public class Tile
+{
+    private Grid<Tile> grid;
+    private int value;
+    private int x;
+    private int y;
+
+    public Tile(Grid<Tile> grid,  int x, int y)
+    {
+        this.grid = grid;
+        this.x = x;
+        this.y = y;
+    }
+    public void AddValue(int addValue)
+    {
+        value += addValue;
+        grid.GridObjectChangeTrigger(x, y);
+    }
+
+    public override string ToString()
+    {
+        return value.ToString();
     }
 }
