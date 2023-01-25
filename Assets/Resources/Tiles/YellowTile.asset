@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89cd196d60e3b71458f24543de135af3, type: 3}
+  m_Name: YellowTile
+  m_EditorClassIdentifier: 
+  tileName: YellowTile
+  tileType: 7
+  tileSprite: {fileID: 21300000, guid: 6b66e934528b8df4b9a64d4e5cdd918f, type: 3}
+  bonusSprites:
+  - {fileID: 21300000, guid: ad9063bb5991df948a026bc884922a8c, type: 3}
+  - {fileID: 21300000, guid: ac0a855a0770e0f41941595fe95c8680, type: 3}
+  - {fileID: 21300000, guid: e4681fd62b40b784d8380876c3751e46, type: 3}
