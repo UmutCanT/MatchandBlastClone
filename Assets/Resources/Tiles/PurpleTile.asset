@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89cd196d60e3b71458f24543de135af3, type: 3}
+  m_Name: PurpleTile
+  m_EditorClassIdentifier: 
+  tileName: PurpleTile
+  tileType: 5
+  tileSprite: {fileID: 21300000, guid: 66930579fa0fc2248983f99543143749, type: 3}
+  bonusSprites:
+  - {fileID: 21300000, guid: 592d1764c380e7c4999a8d30304eb9c4, type: 3}
+  - {fileID: 21300000, guid: 8238ff87c7338ce469eb409e007a8254, type: 3}
+  - {fileID: 21300000, guid: c1ca1f794a771014894498299ddd09d3, type: 3}

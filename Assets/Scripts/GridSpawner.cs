@@ -1,53 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using UnityEngine.WSA;
 
 public class GridSpawner : MonoBehaviour
 {
-    Grid<Tile> tileGrid;
+    private Map map;
+    [SerializeField] TileTemplate blue;
+    [SerializeField] TileTemplate green;
+    [SerializeField] TileTemplate pink;
+    [SerializeField] TileTemplate purple;
+    [SerializeField] TileTemplate yellow;
+    [SerializeField] TileTemplate red;
 
     // Start is called before the first frame update
     void Start()
     {      
-        tileGrid = new Grid<Tile>(10,10, 10f,  new Vector3(-40,-40), (Grid<Tile> g, int x, int y) => new Tile(g, x, y));
+        map = new Map(20,10,10f,Vector3.zero);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Vector3 position = Utils.GetMouseWorldPosition();
-            Tile  tile  = tileGrid.GetGridObject(position);
-            if (tile != null)
-            {
-                tile.AddValue(5);
-            }
+            Vector3 worldPos = Utils.GetMouseWorldPosition();
+            map.SetMapTile(worldPos, TileTypes.Red);            
         }
-    }
-}
-
-public class Tile
-{
-    private Grid<Tile> grid;
-    private int value;
-    private int x;
-    private int y;
-
-    public Tile(Grid<Tile> grid,  int x, int y)
-    {
-        this.grid = grid;
-        this.x = x;
-        this.y = y;
-    }
-    public void AddValue(int addValue)
-    {
-        value += addValue;
-        grid.GridObjectChangeTrigger(x, y);
-    }
-
-    public override string ToString()
-    {
-        return value.ToString();
     }
 }
