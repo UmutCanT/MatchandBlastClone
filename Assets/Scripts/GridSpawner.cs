@@ -6,26 +6,18 @@ using UnityEngine.WSA;
 
 public class GridSpawner : MonoBehaviour
 {
-    private Map map;
-    [SerializeField] TileTemplate blue;
-    [SerializeField] TileTemplate green;
-    [SerializeField] TileTemplate pink;
-    [SerializeField] TileTemplate purple;
-    [SerializeField] TileTemplate yellow;
-    [SerializeField] TileTemplate red;
+    [SerializeField] GridVisualsManager visualsManager;
+    private Map map;  
 
     // Start is called before the first frame update
     void Start()
     {      
-        map = new Map(20,10,10f,Vector3.zero);
+        map = new Map(5,5,2.5f,Vector3.zero);
+        visualsManager.Setup(map.TileGrid);
+        visualsManager.UpdateVisual(map.TileGrid);
     }
 
     private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 worldPos = Utils.GetMouseWorldPosition();
-            map.SetMapTile(worldPos, TileTypes.Red);            
-        }
+    {     
     }
 }

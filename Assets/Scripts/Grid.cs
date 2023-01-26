@@ -19,6 +19,10 @@ public class Grid<TGridObject>
     TGridObject[,] gridArray;
     TextMesh[,] debugTextArr;
 
+    public int Height { get => height; }
+    public int Width { get => width; }
+    public float CellSize { get => cellSize; }
+
     public Grid(int width, int height, float cellSize, Vector3 gridOrigin, Func<Grid<TGridObject>, int, int, TGridObject> createdGridObject)
     {
         this.height = height;
@@ -37,7 +41,7 @@ public class Grid<TGridObject>
             }
         }
 
-        bool showTest = true;
+        bool showTest = false;
         if (showTest)
             CycleArray();
     }
