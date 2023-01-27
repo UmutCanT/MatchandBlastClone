@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: BlueTile
   m_EditorClassIdentifier: 
   tileName: BlueTile
-  tileType: 2
+  tileType: 0
   tileSprite: {fileID: 21300000, guid: 4ef0cec1f764b1f4e842498b2a48bab0, type: 3}
-  bonusSprites:
-  - {fileID: 21300000, guid: 40e52051de1984e499c92ba17fea5cc1, type: 3}
-  - {fileID: 21300000, guid: ed1e0d51152a2fc499b89c2626efd1d5, type: 3}
-  - {fileID: 21300000, guid: cfd3016752d9da04cac30c53deb35ddd, type: 3}
+  spriteA: {fileID: 21300000, guid: 40e52051de1984e499c92ba17fea5cc1, type: 3}
+  spriteB: {fileID: 21300000, guid: ed1e0d51152a2fc499b89c2626efd1d5, type: 3}
+  spriteC: {fileID: 21300000, guid: cfd3016752d9da04cac30c53deb35ddd, type: 3}

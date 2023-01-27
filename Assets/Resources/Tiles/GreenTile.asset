@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: GreenTile
   m_EditorClassIdentifier: 
   tileName: GreenTile
-  tileType: 3
+  tileType: 1
   tileSprite: {fileID: 21300000, guid: 3fd4e5ff0d7977f4b96d57a5f870235d, type: 3}
-  bonusSprites:
-  - {fileID: 21300000, guid: 2b81b8493cd4cfb4ebcb0bf70e341d8b, type: 3}
-  - {fileID: 21300000, guid: 005b128f3972d184591192fec775ff68, type: 3}
-  - {fileID: 21300000, guid: 9691911f1f5930e438f3aac0c131b98c, type: 3}
+  spriteA: {fileID: 21300000, guid: 2b81b8493cd4cfb4ebcb0bf70e341d8b, type: 3}
+  spriteB: {fileID: 21300000, guid: 005b128f3972d184591192fec775ff68, type: 3}
+  spriteC: {fileID: 21300000, guid: 9691911f1f5930e438f3aac0c131b98c, type: 3}

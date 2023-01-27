@@ -94,22 +94,22 @@ public class GridVisualsManager : MonoBehaviour
             case TileTypes.Grass:
                 break;
             case TileTypes.Blue:
-                tileObject.ChangeSprite(tileTemplates[0].TileSprite);
+                tileObject.ChangeSprite(tileTemplates[0].GetSprite(tile.BonusType));
                 break;
             case TileTypes.Green:
-                tileObject.ChangeSprite(tileTemplates[1].TileSprite);
+                tileObject.ChangeSprite(tileTemplates[1].GetSprite(tile.BonusType));
                 break;
             case TileTypes.Pink:
-                tileObject.ChangeSprite(tileTemplates[2].TileSprite);
+                tileObject.ChangeSprite(tileTemplates[2].GetSprite(tile.BonusType));
                 break;
             case TileTypes.Purple:
-                tileObject.ChangeSprite(tileTemplates[3].TileSprite);
+                tileObject.ChangeSprite(tileTemplates[3].GetSprite(tile.BonusType));
                 break;
             case TileTypes.Red:
-                tileObject.ChangeSprite(tileTemplates[4].TileSprite);
+                tileObject.ChangeSprite(tileTemplates[4].GetSprite(tile.BonusType));
                 break;
             case TileTypes.Yellow:
-                tileObject.ChangeSprite(tileTemplates[5].TileSprite);
+                tileObject.ChangeSprite(tileTemplates[5].GetSprite(tile.BonusType));
                 break;
             default:
                 break;

@@ -11,5 +11,10 @@ public abstract class TileTemplate : ScriptableObject
     public Sprite TileSprite { get => tileSprite; set => tileSprite = value; }
     public TileTypes TileType { get => tileType; set => tileType = value; }
 
+    public virtual Sprite GetSprite(string name)
+    {
+        return tileSprite;
+    }
+
     public abstract void Behaviour();
 }
