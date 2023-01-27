@@ -12,13 +12,17 @@ public class GridSpawner : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {      
-        map = new Map(5,5,2.5f,spawnPos);
+    {
+        map = new Map(10,10,2.5f,spawnPos);
         visualsManager.Setup(map.TileGrid);
         visualsManager.UpdateVisual(map.TileGrid);
     }
 
     private void Update()
-    {     
-    }
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            map.TileGrid.CycleArray();
+        }
+    }  
 }

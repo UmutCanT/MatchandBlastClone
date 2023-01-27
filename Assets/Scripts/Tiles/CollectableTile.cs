@@ -7,6 +7,8 @@ public class CollectableTile : TileTemplate
 {
     [SerializeField] List<Sprite> bonusSprites;
 
+    public List<Sprite> BonusSprites { get => bonusSprites; }
+
     public override void Behaviour()
     {
         throw new System.NotImplementedException();

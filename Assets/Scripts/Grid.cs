@@ -42,18 +42,18 @@ public class Grid<TGridObject>
             }
         }
 
-        bool showTest = true;
+        bool showTest = false;
         if (showTest)
             CycleArray();
     }
 
-    void CycleArray()
+    public void CycleArray()
     {
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
             for (int y = 0; y < gridArray.GetLength(1); y++)
             {
-                //debugTextArr[x, y] = Utils.CreateWorldText(null, gridArray[x, y]?.ToString(), GetWorldPosition(x, y) + new Vector3(cellSize , cellSize) /2, 30, Color.blue, TextAnchor.MiddleCenter, TextAlignment.Center, 1);
+               debugTextArr[x, y] = Utils.CreateWorldText(null, gridArray[x, y]?.ToString(), GetWorldPosition(x, y) + new Vector3(cellSize , cellSize) /2, 10, Color.black, TextAnchor.MiddleCenter, TextAlignment.Center, 1);
                 Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.blue, 100f);
                 Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x +1, y), Color.blue, 100f);               
             }
@@ -63,7 +63,7 @@ public class Grid<TGridObject>
 
         OnGridObjectChanged += (object sender, OnGridObjectChangedEventArgs eventArgs) =>
         {
-            //debugTextArr[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y].ToString();
+            debugTextArr[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y].ToString();
         };
 
     }

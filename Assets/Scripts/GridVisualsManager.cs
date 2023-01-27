@@ -12,7 +12,8 @@ public class GridVisualsManager : MonoBehaviour
     List<Transform> visualNodeList;
     Transform[,] visualNodeArray;
     Grid<Tile> grid;
-
+    int sameColorCount = 0;
+    List<Tile> sameColors = new List<Tile>();
 
     private void Awake()
     {
@@ -50,10 +51,21 @@ public class GridVisualsManager : MonoBehaviour
         {
             for (int y = 0; y < grid.Height; y++)
             {
-                Tile tileObject = grid.GetGridObject(x, y);
+                Tile tile = grid.GetGridObject(x, y);
+                if (!tile.Searched)
+                {
+                    TileTypes searchedType = tile.TileType;                
+                    SearchNeighbors(searchedType, x, y, grid, sameColors);
+                    if (sameColorCount > 0)
+                    {
+                        ChangeListOfTilesSprites(sameColorCount, sameColors);
+                    }
+                    sameColors.Clear();
+                    sameColorCount = 0;
+                }                
                 Transform visualNode = visualNodeArray[x, y];
                 visualNode.gameObject.SetActive(true);
-                SetupVisualNode(visualNode, tileObject);
+                SetupVisualNode(visualNode, tile);
             }
         }
     }
@@ -72,36 +84,125 @@ public class GridVisualsManager : MonoBehaviour
         return visualNodeTransform;
     }
 
-    private void SetupVisualNode(Transform visualNode, Tile tileObject)
+    private void SetupVisualNode(Transform visualNode, Tile tile)
     {
-        TileObject obj = visualNode.gameObject.GetComponent<TileObject>();
-        obj.ChangeSpriteSize(Vector2.one *(grid.CellSize - .5f) );
-        switch (tileObject.TileTypeEnum)
+        TileObject tileObject = visualNode.gameObject.GetComponent<TileObject>();
+        switch (tile.TileType)
         {
             case TileTypes.Bonus:
                 break;
             case TileTypes.Grass:
                 break;
             case TileTypes.Blue:
-                obj.ChangeSprite(tileTemplates[0].TileSprite);
+                tileObject.ChangeSprite(tileTemplates[0].TileSprite);
                 break;
             case TileTypes.Green:
-                obj.ChangeSprite(tileTemplates[1].TileSprite);
+                tileObject.ChangeSprite(tileTemplates[1].TileSprite);
                 break;
             case TileTypes.Pink:
-                obj.ChangeSprite(tileTemplates[2].TileSprite);
+                tileObject.ChangeSprite(tileTemplates[2].TileSprite);
                 break;
             case TileTypes.Purple:
-                obj.ChangeSprite(tileTemplates[3].TileSprite);
+                tileObject.ChangeSprite(tileTemplates[3].TileSprite);
                 break;
             case TileTypes.Red:
-                obj.ChangeSprite(tileTemplates[4].TileSprite);
+                tileObject.ChangeSprite(tileTemplates[4].TileSprite);
                 break;
             case TileTypes.Yellow:
-                obj.ChangeSprite(tileTemplates[5].TileSprite);
+                tileObject.ChangeSprite(tileTemplates[5].TileSprite);
                 break;
             default:
                 break;
         }
+    }
+
+    bool Searchable(Tile tile, int x, int y)
+    {
+        if (x < 0 || x > grid.Width || y < 0 || y > grid.Height)
+            return false;
+
+        if(tile != null)
+            return !tile.Searched;
+        return false;
+    }
+    void SearchTile(TileTypes tileType, int x, int y, Grid<Tile> grid, int colorCount, List<Tile> sameColors)
+    {
+        SearchNeighbors(tileType, x, y, grid, sameColors);      
+    }
+
+
+    void SearchNeighbors(TileTypes tileType, int x, int y, Grid<Tile> grid, List<Tile> sameColors)
+    {      
+        if (Searchable(grid.GetGridObject(x + 1, y), x + 1 ,y))
+        {
+            if(tileType == grid.GetGridObject(x + 1, y).TileType)
+            {
+                sameColors.Add(grid.GetGridObject(x + 1, y));
+                sameColorCount++;
+                grid.GetGridObject(x + 1, y).Searched= true;
+                SearchNeighbors(tileType, x + 1, y, grid, sameColors);
+            }
+        }
+
+        if (Searchable(grid.GetGridObject(x - 1, y), x - 1, y))
+        {
+            if (tileType == grid.GetGridObject(x - 1, y).TileType)
+            {
+                sameColors.Add(grid.GetGridObject(x - 1, y));
+                sameColorCount++;
+                grid.GetGridObject(x - 1, y).Searched = true;
+                SearchNeighbors(tileType, x - 1, y, grid, sameColors);
+            }
+        }
+
+        if (Searchable(grid.GetGridObject(x, y + 1), x, y + 1))
+        {
+            if (tileType == grid.GetGridObject(x, y + 1).TileType)
+            {
+                sameColors.Add(grid.GetGridObject(x, y + 1));
+                sameColorCount++;
+                grid.GetGridObject(x, y + 1).Searched = true;
+                SearchNeighbors(tileType, x, y + 1, grid, sameColors);
+            }
+        }
+
+        if (Searchable(grid.GetGridObject(x, y - 1), x, y - 1))
+        {
+            if (tileType == grid.GetGridObject(x, y - 1).TileType)
+            {
+                sameColors.Add(grid.GetGridObject(x, y - 1));
+                sameColorCount++;
+                grid.GetGridObject(x, y - 1).Searched = true;
+                SearchNeighbors(tileType, x, y - 1, grid, sameColors);
+            }
+        }        
+    }
+
+    void ChangeListOfTilesSprites(int sameColorCount, List<Tile> tiles)
+    {
+        if (sameColorCount > 5)
+        {
+            Debug.Log("C");
+            ListChanges(tiles, "C");           
+        }
+        else if (sameColorCount > 3 && sameColorCount <= 5)
+        {
+            Debug.Log("B");
+            ListChanges(tiles, "B");
+        }
+        else if (sameColorCount > 1 && sameColorCount <= 3)
+        {
+            Debug.Log("A");
+            ListChanges(tiles, "A");
+        }
+    }
+
+    void ListChanges(List<Tile> tiles, string text)
+    {
+        foreach (var tile in tiles)
+        {
+            tile.BonusType = text;
+        }
+
     }
 }

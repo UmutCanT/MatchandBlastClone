@@ -8,14 +8,20 @@ public class Tile
     private int x;
     private int y;
     private TileTypes tileType;
+    private bool searched;
+    string bonusType;
 
-    public TileTypes TileTypeEnum { get => tileType; }
+
+    public TileTypes TileType { get => tileType; }
+    public bool Searched { get => searched; set => searched = value; }
+    public string BonusType { get => bonusType; set => bonusType = value; }
 
     public Tile(Grid<Tile> grid,  int x, int y)
     {
         this.grid = grid;
         this.x = x;
-        this.y = y;       
+        this.y = y; 
+        searched= false;
         tileType = (TileTypes)Random.Range(0, Enum.GetValues(typeof(TileTypes)).Length-3);
     }
     
@@ -27,6 +33,6 @@ public class Tile
 
     public override string ToString()
     {
-        return tileType.ToString();
+        return bonusType;
     }
 }
