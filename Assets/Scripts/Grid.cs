@@ -22,6 +22,7 @@ public class Grid<TGridObject>
     public int Height { get => height; }
     public int Width { get => width; }
     public float CellSize { get => cellSize; }
+    public Vector3 GridOrigin { get => gridOrigin; }
 
     public Grid(int width, int height, float cellSize, Vector3 gridOrigin, Func<Grid<TGridObject>, int, int, TGridObject> createdGridObject)
     {
@@ -41,7 +42,7 @@ public class Grid<TGridObject>
             }
         }
 
-        bool showTest = false;
+        bool showTest = true;
         if (showTest)
             CycleArray();
     }
@@ -52,8 +53,7 @@ public class Grid<TGridObject>
         {
             for (int y = 0; y < gridArray.GetLength(1); y++)
             {
-                debugTextArr[x, y] = Utils.CreateWorldText(null, gridArray[x, y]?.ToString(), GetWorldPosition(x, y) + new Vector3(cellSize , cellSize) * .5f, 
-                    30, Color.blue, TextAnchor.MiddleCenter, TextAlignment.Center, 1);
+                //debugTextArr[x, y] = Utils.CreateWorldText(null, gridArray[x, y]?.ToString(), GetWorldPosition(x, y) + new Vector3(cellSize , cellSize) /2, 30, Color.blue, TextAnchor.MiddleCenter, TextAlignment.Center, 1);
                 Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.blue, 100f);
                 Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x +1, y), Color.blue, 100f);               
             }
@@ -63,7 +63,7 @@ public class Grid<TGridObject>
 
         OnGridObjectChanged += (object sender, OnGridObjectChangedEventArgs eventArgs) =>
         {
-            debugTextArr[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y].ToString();
+            //debugTextArr[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y].ToString();
         };
 
     }

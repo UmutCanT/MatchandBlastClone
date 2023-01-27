@@ -24,19 +24,18 @@ public class GridVisualsManager : MonoBehaviour
     {
         this.grid = grid;
         visualNodeArray = new Transform[grid.Width, grid.Height];
-
+        Vector3 startPos = grid.GridOrigin;
+        float distance = grid.CellSize;
         for (int x = 0; x < grid.Width; x++)
         {
             for (int y = 0; y < grid.Height; y++)
             {
-                Vector3 gridPosition = grid.CellSize * (new Vector3(x, y) + Vector3.one * .5f);
+                Vector3 gridPosition = startPos + distance * new Vector3(x +.5f, y +.5f);
                 Transform visualNode = CreateVisualNode(gridPosition);
                 visualNodeArray[x,y] = visualNode;
                 visualNodeList.Add(visualNode);
             }
         }
-
-        //HideNodeVisuals();
         grid.OnGridObjectChanged += OnGridValueChanged;
     }
 
@@ -47,7 +46,6 @@ public class GridVisualsManager : MonoBehaviour
 
     public void UpdateVisual(Grid<Tile> grid)
     {
-        //HideNodeVisuals();
         for (int x = 0; x < grid.Width; x++)
         {
             for (int y = 0; y < grid.Height; y++)
@@ -77,7 +75,7 @@ public class GridVisualsManager : MonoBehaviour
     private void SetupVisualNode(Transform visualNode, Tile tileObject)
     {
         TileObject obj = visualNode.gameObject.GetComponent<TileObject>();
-        SpriteRenderer spriteRenderer= obj.GetComponent<SpriteRenderer>();
+        obj.ChangeSpriteSize(Vector2.one *(grid.CellSize - .5f) );
         switch (tileObject.TileTypeEnum)
         {
             case TileTypes.Bonus:
@@ -85,28 +83,21 @@ public class GridVisualsManager : MonoBehaviour
             case TileTypes.Grass:
                 break;
             case TileTypes.Blue:
-                Debug.Log("Blue");
                 obj.ChangeSprite(tileTemplates[0].TileSprite);
-                spriteRenderer.sprite = tileTemplates[0].TileSprite;
                 break;
             case TileTypes.Green:
-                Debug.Log("Green");
                 obj.ChangeSprite(tileTemplates[1].TileSprite);
                 break;
             case TileTypes.Pink:
-                Debug.Log("Pink");
                 obj.ChangeSprite(tileTemplates[2].TileSprite);
                 break;
             case TileTypes.Purple:
-                Debug.Log("Purple");
                 obj.ChangeSprite(tileTemplates[3].TileSprite);
                 break;
             case TileTypes.Red:
-                Debug.Log("Red");
                 obj.ChangeSprite(tileTemplates[4].TileSprite);
                 break;
             case TileTypes.Yellow:
-                Debug.Log("Yellow");
                 obj.ChangeSprite(tileTemplates[5].TileSprite);
                 break;
             default:
