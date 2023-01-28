@@ -15,6 +15,8 @@ public class Tile
     public TileTypes TileType { get => tileType; }
     public bool Searched { get => searched; set => searched = value; }
     public string BonusType { get => bonusType; set => bonusType = value; }
+    public int X { get => x; }
+    public int Y { get => y; }
 
     public Tile(Grid<Tile> grid,  int x, int y)
     {
@@ -23,6 +25,11 @@ public class Tile
         this.y = y; 
         searched= false;
         tileType = (TileTypes)Random.Range(0, Enum.GetValues(typeof(TileTypes)).Length-3);
+    }
+
+    public void PopUpTile()
+    {
+        tileType = TileTypes.None;
     }
     
     public void SetTile(TileTypes tileType)

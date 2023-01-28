@@ -9,10 +9,6 @@ public class CollectableTile : TileTemplate
     [SerializeField] Sprite spriteB;
     [SerializeField] Sprite spriteC;
 
-    public Sprite SpriteA { get => spriteA; set => spriteA = value; }
-    public Sprite SpriteB { get => spriteB; set => spriteB = value; }
-    public Sprite SpriteC { get => spriteC; set => spriteC = value; }
-
     public override void Behaviour()
     {
         throw new System.NotImplementedException();

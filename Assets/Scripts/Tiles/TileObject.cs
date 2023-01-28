@@ -8,4 +8,9 @@ public class TileObject: MonoBehaviour
     {
         spriteRenderer.sprite = sprite;
     }
+
+    public void ChangeSprite()
+    {
+        spriteRenderer.sprite = null;
+    }
 }

@@ -38,6 +38,7 @@ public class GridVisualsManager : MonoBehaviour
             }
         }
         grid.OnGridObjectChanged += OnGridValueChanged;
+        UpdateVisual(this.grid);
     }
 
     private void OnGridValueChanged(object sender, Grid<Tile>.OnGridObjectChangedEventArgs e)
@@ -68,6 +69,19 @@ public class GridVisualsManager : MonoBehaviour
                 SetupVisualNode(visualNode, tile);
             }
         }
+        ClearSearch(grid);
+    }
+
+    public void ClearSearch(Grid<Tile> grid)
+    {
+        for (int x = 0; x < grid.Width; x++)
+        {
+            for (int y = 0; y < grid.Height; y++)
+            {
+                grid.GetGridObject(x, y).Searched = false;
+            }
+        }
+
     }
 
     private void HideNodeVisuals()
@@ -91,7 +105,8 @@ public class GridVisualsManager : MonoBehaviour
         {
             case TileTypes.Bonus:
                 break;
-            case TileTypes.Grass:
+            case TileTypes.None:
+                tileObject.ChangeSprite();
                 break;
             case TileTypes.Blue:
                 tileObject.ChangeSprite(tileTemplates[0].GetSprite(tile.BonusType));
@@ -125,9 +140,19 @@ public class GridVisualsManager : MonoBehaviour
             return !tile.Searched;
         return false;
     }
-    void SearchTile(TileTypes tileType, int x, int y, Grid<Tile> grid, int colorCount, List<Tile> sameColors)
+    public void PopUpTiles(Tile tile)
     {
-        SearchNeighbors(tileType, x, y, grid, sameColors);      
+        List<Tile> tiles= new List<Tile>();
+        TileTypes searchedType = tile.TileType;
+        SearchNeighbors(searchedType, tile.X, tile.Y, grid, tiles);
+        if (tiles.Count > 1)
+        {
+            foreach(Tile item in tiles) 
+            {
+                item.PopUpTile();
+            }
+            UpdateVisual(grid);
+        }    
     }
 
 
@@ -205,4 +230,6 @@ public class GridVisualsManager : MonoBehaviour
         }
 
     }
+
+    
 }

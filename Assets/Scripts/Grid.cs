@@ -118,10 +118,4 @@ public class Grid<TGridObject>
         if (OnGridObjectChanged != null)
             OnGridObjectChanged(this, new OnGridObjectChangedEventArgs { x = x, y = y });
     }
-
-
-    void ShowCoordinates(int x, int y)
-    {
-        debugTextArr[x, y].text = $"({x}, {y})";
-    }
 }
