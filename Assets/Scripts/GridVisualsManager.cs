@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Analytics;
+using Random = UnityEngine.Random;
 
 public class GridVisualsManager : MonoBehaviour
 {   
@@ -149,9 +152,10 @@ public class GridVisualsManager : MonoBehaviour
         {
             foreach(Tile item in tiles) 
             {
-                item.PopUpTile();
+                item.TileType = TileTypes.None;
             }
-            UpdateVisual(grid);
+            StartCoroutine(FindNullTiles());
+            StopCoroutine(FindNullTiles());
         }    
     }
 
@@ -207,17 +211,14 @@ public class GridVisualsManager : MonoBehaviour
     {
         if (sameColorCount > 5)
         {
-            Debug.Log("C");
             ListChanges(tiles, "C");           
         }
         else if (sameColorCount > 3 && sameColorCount <= 5)
         {
-            Debug.Log("B");
             ListChanges(tiles, "B");
         }
         else if (sameColorCount > 1 && sameColorCount <= 3)
         {
-            Debug.Log("A");
             ListChanges(tiles, "A");
         }
     }
@@ -231,5 +232,50 @@ public class GridVisualsManager : MonoBehaviour
 
     }
 
-    
+    public IEnumerator FindNullTiles()
+    {
+        for (int x = 0; x < grid.Width; x++)
+        {
+            for (int y = 0; y < grid.Height; y++)
+            {
+                if(grid.GetGridObject(x, y).TileType == TileTypes.None)
+                {
+                    yield return StartCoroutine(ShiftTiles(x, y));
+                    break;
+                }
+            }
+        }
+    }
+
+    private IEnumerator ShiftTiles(int x, int yStart , float shifDelay = 0.15f)
+    {
+        int nullCount = 0;
+        List<Tile> nullTiles = new List<Tile>();
+
+        for (int y = yStart; y < grid.Height; y++)
+        {  
+            Tile tile = grid.GetGridObject(x, y);
+            if (tile.TileType == TileTypes.None)
+            { 
+                nullCount++;
+            }
+            nullTiles.Add(tile);
+        }
+
+        for (int i = 0; i < nullCount; i++)
+        { 
+            yield return new WaitForSeconds(shifDelay);
+            for (int k = 0; k < nullTiles.Count - 1; k++)
+            {
+                nullTiles[k].TileType = nullTiles[k + 1].TileType;
+                nullTiles[k + 1].TileType = GetNewTiles();
+            }
+        }
+        UpdateVisual(grid);
+    }
+
+    private TileTypes GetNewTiles()
+    {
+        return (TileTypes)Random.Range(0, Enum.GetValues(typeof(TileTypes)).Length - 3);
+    }
 }
