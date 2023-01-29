@@ -8,16 +8,15 @@ public class Grid<TGridObject>
     public event EventHandler<OnGridObjectChangedEventArgs> OnGridObjectChanged;
     public class OnGridObjectChangedEventArgs : EventArgs
     {
-        public int x,y;
+        public int x;
+        public int y;
     }
 
-
-    int height;
     int width;
+    int height;
     float cellSize;
     Vector3 gridOrigin;
     TGridObject[,] gridArray;
-    TextMesh[,] debugTextArr;
 
     public int Height { get => height; }
     public int Width { get => width; }
@@ -26,13 +25,12 @@ public class Grid<TGridObject>
 
     public Grid(int width, int height, float cellSize, Vector3 gridOrigin, Func<Grid<TGridObject>, int, int, TGridObject> createdGridObject)
     {
-        this.height = height;
         this.width = width;
+        this.height = height;
         this.cellSize = cellSize;
         this.gridOrigin = gridOrigin;
         
-        gridArray = new TGridObject[width, height];
-        debugTextArr= new TextMesh[width, height];
+        gridArray = new TGridObject[width, height];      
 
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
@@ -42,34 +40,32 @@ public class Grid<TGridObject>
             }
         }
 
-        bool showTest = false;
-        if (showTest)
-            CycleArray();
-    }
-
-    public void CycleArray()
-    {
-        for (int x = 0; x < gridArray.GetLength(0); x++)
+        bool showDebug = true;
+        if (showDebug)
         {
-            for (int y = 0; y < gridArray.GetLength(1); y++)
+            TextMesh[,] debugTextArray = new TextMesh[width, height];
+
+            for (int x = 0; x < gridArray.GetLength(0); x++)
             {
-               debugTextArr[x, y] = Utils.CreateWorldText(null, gridArray[x, y]?.ToString(), GetWorldPosition(x, y) + new Vector3(cellSize , cellSize) /2, 10, Color.black, TextAnchor.MiddleCenter, TextAlignment.Center, 1);
-                Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.blue, 100f);
-                Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x +1, y), Color.blue, 100f);               
+                for (int y = 0; y < gridArray.GetLength(1); y++)
+                {
+                    debugTextArray[x, y] = Utils.CreateWorldText(gridArray[x, y]?.ToString(), null, GetWorldPosition(x, y) + new Vector3(cellSize, cellSize) * .5f, 30, Color.white, TextAnchor.MiddleCenter);
+                    debugTextArray[x, y].characterSize = .1f;
+                    debugTextArray[x, y].fontSize = 30;
+                    Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
+                    Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
+                }
             }
+            Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.white, 100f);
+            Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.white, 100f);
+
+            OnGridObjectChanged += (object sender, OnGridObjectChangedEventArgs eventArgs) => {
+                debugTextArray[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y]?.ToString();
+            };
         }
-        Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.blue, 100f);
-        Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.blue, 100f);
-
-        OnGridObjectChanged += (object sender, OnGridObjectChangedEventArgs eventArgs) =>
-        {
-            debugTextArr[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y].ToString();
-        };
-
     }
 
-
-    Vector3 GetWorldPosition(int x, int y) 
+    public Vector3 GetWorldPosition(int x, int y) 
     {
         return new Vector3(x, y) * cellSize + gridOrigin;
     }
@@ -78,8 +74,7 @@ public class Grid<TGridObject>
     {
         if (x >= 0 && y >= 0 && x < width && y < height)
         {
-            gridArray[x, y] = value;
-            debugTextArr[x, y].text = gridArray[x, y].ToString();
+            gridArray[x, y] = value;          
         }
     }
 
@@ -113,9 +108,8 @@ public class Grid<TGridObject>
         return GetGridObject(x, y);
     }
 
-    public void GridObjectChangeTrigger(int x, int y)
+    public void TriggerGridObjectChanged(int x, int y)
     {
-        if (OnGridObjectChanged != null)
-            OnGridObjectChanged(this, new OnGridObjectChangedEventArgs { x = x, y = y });
+        OnGridObjectChanged?.Invoke(this, new OnGridObjectChangedEventArgs { x = x, y = y });
     }
 }
