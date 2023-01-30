@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06fcc324247adc142bc42c0ed925d485, type: 3}
+  m_Name: LevelTemplete
+  m_EditorClassIdentifier: 
+  tileTemplates:
+  - {fileID: 11400000, guid: 3231a8cb7c569114caf870b7a7567a7b, type: 2}
+  - {fileID: 11400000, guid: 1c590fd7c29e7214cb29ea3e92f735a7, type: 2}
+  - {fileID: 11400000, guid: 27b21e8e1da42f14fbeeaf90ed93e4ff, type: 2}
+  - {fileID: 11400000, guid: 12f40b874fb78e84abbc38c18555499c, type: 2}
+  - {fileID: 11400000, guid: 46fe59afdb40eea47bbf7ceeb420f933, type: 2}
+  - {fileID: 11400000, guid: 1a049dffc57bb8246995b57695ff10a8, type: 2}
+  width: 3
+  height: 3
+  stateA: 3
+  stateB: 5
+  stateC: 7

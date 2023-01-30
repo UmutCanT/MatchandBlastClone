@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CollectableTemplate", menuName = "Tiles/New collectable tile")]
+[CreateAssetMenu(fileName = "CollectableTemplate", menuName = "Tiles/New Collectable Tile")]
 public class CollectableTemplate : TileTemplate
 {
     [SerializeField] Sprite spriteA;

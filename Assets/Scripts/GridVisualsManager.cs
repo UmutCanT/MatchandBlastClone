@@ -4,7 +4,6 @@ using UnityEngine;
 
 public partial class GridVisualsManager : MonoBehaviour
 {
-    [SerializeField] List<TileTemplate> tileTemplates;
     [SerializeField] Transform prefabVisualNode;
     [SerializeField] Map map;
     CamManager camManager;

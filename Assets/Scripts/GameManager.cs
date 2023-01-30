@@ -2,20 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridSpawner : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     [SerializeField] GridVisualsManager visualsManager;
-    private Map map;
-
-    private void Awake()
-    {
-        map = GetComponent<Map>();
-    }
+    [SerializeField] Map map;
 
     // Start is called before the first frame update
     void Start()
     {
-        map.CreateMap(3, 3, 1f, Vector3.zero);
+        map.CreateMap();
     }
 
     private void Update()

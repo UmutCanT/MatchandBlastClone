@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 public class Map: MonoBehaviour 
 {
-    [SerializeField] TileTemplate[] tileTemplates;
+    [SerializeField] LevelTemplete level;
 
     public event EventHandler OnGemGridPositionDestroyed;
     public event EventHandler<OnNewGemGridSpawnedEventArgs> OnNewGemGridSpawned;
@@ -24,12 +24,12 @@ public class Map: MonoBehaviour
     }
 
     Grid<TilePosition> tilePositionGrid;
-    private int gridWidth;
-    private int gridHeight;
-    private int stateC = 5;
-    private int stateB = 3;
-    private int stateA = 1;
-    int sameColorCount = 0;
+    private int gridWidth = 10;
+    private int gridHeight = 10;
+    private int stateC = 10;
+    private int stateB = 7;
+    private int stateA = 5;
+    int sameColorCount;
     List<TilePosition> sameColorsList;
     List<TilePosition> noSameNeighbor;
     bool hasPair = false;
@@ -54,11 +54,14 @@ public class Map: MonoBehaviour
         OnCheckFinish -= ChangePairValue;
     }
 
-    public void CreateMap(int width, int height, float cellSize, Vector3 gridOrigin)
+    public void CreateMap()
     {
-        gridWidth = width;
-        gridHeight = height;
-        tilePositionGrid = new Grid<TilePosition>(gridWidth, gridHeight, cellSize, gridOrigin, (Grid<TilePosition> g, int x, int y) => new TilePosition(g, x, y));
+        gridWidth = level.Width;
+        gridHeight = level.Height;
+        stateA = level.StateA;
+        stateB = level.StateB;
+        stateC= level.StateC;
+        tilePositionGrid = new Grid<TilePosition>(gridWidth, gridHeight, 1f, Vector3.zero, (Grid<TilePosition> g, int x, int y) => new TilePosition(g, x, y));
         sameColorsList = new List<TilePosition>();
         noSameNeighbor = new List<TilePosition>();
 
@@ -66,7 +69,7 @@ public class Map: MonoBehaviour
         {
             for (int y = 0; y < gridHeight; y++)
             {
-                TileTemplate tileTemplate = tileTemplates[Random.Range(0, tileTemplates.Length)];
+                TileTemplate tileTemplate = level.TileTemplates[Random.Range(0, level.TileTemplates.Length)];
                 Tile tile = new Tile(tileTemplate, x, y);
                 tilePositionGrid.GetGridObject(x, y).SetTile(tile);
             }
@@ -85,7 +88,7 @@ public class Map: MonoBehaviour
                 TilePosition tilePosition = tilePositionGrid.GetGridObject(x, y);
                 if (tilePosition.IsEmpty())
                 {
-                    TileTemplate tileTemplate = tileTemplates[Random.Range(0, tileTemplates.Length)];
+                    TileTemplate tileTemplate = level.TileTemplates[Random.Range(0, level.TileTemplates.Length)];
                     Tile tile = new Tile(tileTemplate, x, y);
                     tilePosition.SetTile(tile);
                     OnNewGemGridSpawned?.Invoke(tile, new OnNewGemGridSpawnedEventArgs
