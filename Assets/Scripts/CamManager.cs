@@ -6,9 +6,9 @@ using UnityEngine;
 public class CamManager : MonoBehaviour
 {
     [SerializeField] Transform camTransform;
-    float camOffSet = 1f;
+    readonly float camOffSet = 1f;
 
-    public void changeCamPosition(int x, int y)
+    public void ChangeCamPosition(int x, int y)
     {
         camTransform.position = new Vector3(x * .5f, y * .5f + camOffSet, camTransform.position.z);
     }

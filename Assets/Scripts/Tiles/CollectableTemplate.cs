@@ -8,12 +8,7 @@ public class CollectableTemplate : TileTemplate
     [SerializeField] Sprite spriteA;
     [SerializeField] Sprite spriteB;
     [SerializeField] Sprite spriteC;
-
-    public override void Behaviour()
-    {
-        throw new System.NotImplementedException();
-    }
-
+  
     public override Sprite GetSprite(TileStates tileState)
     {
         return tileState switch

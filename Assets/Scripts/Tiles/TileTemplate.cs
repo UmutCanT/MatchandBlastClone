@@ -9,6 +9,5 @@ public abstract class TileTemplate : ScriptableObject
     public virtual Sprite GetSprite(TileStates tileState)
     {
         return tileSprite;
-    }
-    public abstract void Behaviour();
+    } 
 }

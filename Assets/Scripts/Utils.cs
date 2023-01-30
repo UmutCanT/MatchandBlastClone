@@ -5,6 +5,8 @@ using UnityEngine;
 
 public static class Utils
 {
+    public static string CAMERA_TAG = "MainCamera";
+
     public static TextMesh CreateWorldText(Transform parent, string text, Vector3 localPos, int fontSize, Color color, TextAnchor textAnchor, TextAlignment textAlignment, int sortingOrder)
     {
         GameObject gameObject = new GameObject("World_Text", typeof(TextMesh));

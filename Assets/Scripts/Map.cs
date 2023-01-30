@@ -1,7 +1,5 @@
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -64,7 +62,6 @@ public class Map: MonoBehaviour
         sameColorsList = new List<TilePosition>();
         noSameNeighbor = new List<TilePosition>();
 
-        //Initialize TileGrid
         for (int x = 0; x < gridWidth; x++)
         {
             for (int y = 0; y < gridHeight; y++)
@@ -75,7 +72,7 @@ public class Map: MonoBehaviour
             }
         }
         CheckAllTiles();
-        TileGrid.ShowDebug(true);
+        TileGrid.ShowDebug(false);
         OnLevelSet?.Invoke(this, new OnLevelSetEventArgs { tilePositionGrid = tilePositionGrid });
     }  
     
@@ -182,7 +179,6 @@ public class Map: MonoBehaviour
             {                
                 tilePositionGrid.GetGridObject(x, y).Tile.SetXandY(x,y);
                 tilePositionGrid.GetGridObject(x, y).SetXandY(x, y);
-                Debug.Log(tilePositionGrid.GetGridObject(x, y).X + " " + tilePositionGrid.GetGridObject(x, y).Y + tilePositionGrid.GetGridObject(x, y).Tile.ToString());
             }
         }
         CheckAllTiles();

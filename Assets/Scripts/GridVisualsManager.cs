@@ -1,36 +1,38 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class GridVisualsManager : MonoBehaviour
+public partial class GridVisualsManager : MonoBehaviour
 {
     [SerializeField] List<TileTemplate> tileTemplates;
     [SerializeField] Transform prefabVisualNode;
     [SerializeField] Map map;
     CamManager camManager;
-    private Dictionary<Tile, TileVisual> tileGridDictionary;
+    Dictionary<Tile, TileVisual> tileGridDictionary;
     float spawnPosY;
 
-    private void Awake()
+    void Awake()
     {
         map.OnLevelSet += InitializeVisuals;
-        camManager = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CamManager>();
+        camManager = GameObject.FindGameObjectWithTag(Utils.CAMERA_TAG).GetComponent<CamManager>();
     }
 
-
-    private void OnEnable()
+    void OnEnable()
     {
         map.OnCheckFinish += UpdateVisuals;
     }
 
-    private void OnDisable()
+    void Update()
+    {
+        UpdateVisualsPositions();
+    }
+
+    void OnDisable()
     {
         map.OnCheckFinish -= UpdateVisuals;
     }
 
-    private void InitializeVisuals(object sender, Map.OnLevelSetEventArgs e)
+    void InitializeVisuals(object sender, Map.OnLevelSetEventArgs e)
     {
         Initialize(sender as Map, e.tilePositionGrid);
     }
@@ -40,7 +42,7 @@ public class GridVisualsManager : MonoBehaviour
         this.map = map;
         spawnPosY = grid.Height + .5f;
 
-        camManager.changeCamPosition(grid.Width, grid.Height);
+        camManager.ChangeCamPosition(grid.Width, grid.Height);
         map.OnGemGridPositionDestroyed += RemoveTileFromDictionary;
         map.OnNewGemGridSpawned += InstantiateVisual;
 
@@ -66,7 +68,7 @@ public class GridVisualsManager : MonoBehaviour
         }   
     }
 
-    private void InstantiateVisual(object sender, Map.OnNewGemGridSpawnedEventArgs e)
+    void InstantiateVisual(object sender, Map.OnNewGemGridSpawnedEventArgs e)
     {
         Vector3 position = e.tilePosition.GetWorldPosition();
         position = new Vector3(position.x, spawnPosY);
@@ -78,17 +80,12 @@ public class GridVisualsManager : MonoBehaviour
         tileGridDictionary[e.tile] = tileVisual;
     }
 
-    private void RemoveTileFromDictionary(object sender, EventArgs e)
+    void RemoveTileFromDictionary(object sender, EventArgs e)
     {
         if (sender is TilePosition tilePosition && tilePosition.Tile != null)
         {
             tileGridDictionary.Remove(tilePosition.Tile);
         }
-    }
-
-    private void Update()
-    {
-        UpdateVisualsPositions();
     }
 
     private void UpdateVisualsPositions()
@@ -104,51 +101,6 @@ public class GridVisualsManager : MonoBehaviour
         foreach (Tile tile in tileGridDictionary.Keys)
         {
             tileGridDictionary[tile].UpdateSprite(tile.TileTemp.GetSprite(tile.TileState));           
-        }
-    }
-
-    private class TileVisual
-    {
-        private Transform transform;
-        private Tile tile;
-        readonly float moveSpeed = 2.2f;
-
-        public TileVisual(Transform transform, Tile tile)
-        {
-            this.transform = transform;
-            this.tile = tile;
-
-            tile.OnPopped += DestroyTileVisual;
-        }
-
-        private void DestroyTileVisual(object sender, EventArgs e)
-        {
-            Destroy(transform.gameObject);
-        }
-
-        public void UpdateSprite(Sprite sprite)
-        {
-            transform.GetComponentInChildren<SpriteRenderer>().sprite = sprite;
-        }
-
-        public void Update()
-        {
-            Vector3 targetPos = tile.GetWorldPosition();
-            Vector3 moveDir  = targetPos - transform.position;           
-            transform.position += moveSpeed * Time.deltaTime * moveDir;
-        }
-
-        public IEnumerator UpdateMov()
-        {
-            Vector3 targetPos = tile.GetWorldPosition();
-            while (transform.position != targetPos)
-            {
-                Vector3 moveDir = targetPos - transform.position;
-                float moveSpeed = 10f;
-                transform.position += moveSpeed * Time.deltaTime * moveDir;
-                yield return new WaitForSeconds(.5f);
-            }
-            yield return null;
         }
     }
 }
