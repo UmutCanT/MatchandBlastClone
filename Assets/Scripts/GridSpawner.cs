@@ -15,7 +15,7 @@ public class GridSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        map.CreateMap(10, 10, 1f, Vector3.zero);
+        map.CreateMap(3, 3, 1f, Vector3.zero);
     }
 
     private void Update()
@@ -26,16 +26,5 @@ public class GridSpawner : MonoBehaviour
             map.TileGrid.GetXandY(mousePosition, out int x, out int y);
             map.PopUpTiles(map.SearchOneTile(x, y));        
         }
-    }
-    
-    IEnumerator Waiting(int x, int y)
-    {
-        map.PopUpTiles(map.SearchOneTile(x, y));
-        yield return new WaitForSeconds(2f);
-        map.FillEmptyTilePositions();
-        yield return new WaitForSeconds(2f);
-        map.SpawnNewTiles();
-        yield return new WaitForSeconds(2f);
-        visualsManager.UpdateVisuals();
-    }
+    } 
 }

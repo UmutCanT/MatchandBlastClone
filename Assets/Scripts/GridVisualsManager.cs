@@ -61,13 +61,9 @@ public class GridVisualsManager : MonoBehaviour
 
                 TileVisual tileVisual = new TileVisual(tileGridVisualTransform, tile);
 
-                tileGridDictionary[tile] = tileVisual;
-
-                // Background Grid Visual
-                //Instantiate(pfBackgroundGridVisual, grid.GetWorldPosition(x, y), Quaternion.identity);
+                tileGridDictionary[tile] = tileVisual;               
             }
-        }
-        //UpdateVisualsPositions();      
+        }   
     }
 
     private void InstantiateVisual(object sender, Map.OnNewGemGridSpawnedEventArgs e)

@@ -22,6 +22,11 @@ public class TilePosition
         this.y = y;
         searched = false;
     }  
+    public void SetXandY(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
 
     public void SetTile(Tile tile)
     {
@@ -97,6 +102,6 @@ public class Tile
     }
     public override string ToString()
     {
-        return tileState.ToString();
+        return $"({x},{y})";
     }
 }

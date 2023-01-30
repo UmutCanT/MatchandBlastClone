@@ -17,18 +17,20 @@ public class Grid<TGridObject>
     float cellSize;
     Vector3 gridOrigin;
     TGridObject[,] gridArray;
+    System.Random random = new System.Random();
 
     public int Height { get => height; }
     public int Width { get => width; }
     public float CellSize { get => cellSize; }
     public Vector3 GridOrigin { get => gridOrigin; }
 
+
     public Grid(int width, int height, float cellSize, Vector3 gridOrigin, Func<Grid<TGridObject>, int, int, TGridObject> createdGridObject)
     {
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
-        this.gridOrigin = gridOrigin;
+        this.gridOrigin = gridOrigin;    
         
         gridArray = new TGridObject[width, height];      
 
@@ -66,6 +68,11 @@ public class Grid<TGridObject>
                 debugTextArray[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y]?.ToString();
             };
         }
+    }
+
+    public void Shuffle()
+    {
+        Utils.Shuffle(random, gridArray);
     }
 
     public Vector3 GetWorldPosition(int x, int y) 
