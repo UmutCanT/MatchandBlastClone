@@ -6,7 +6,12 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] GridVisualsManager visualsManager;
     [SerializeField] Map map;
+    PlayerInput player;
 
+    private void Awake()
+    {
+        player = GameObject.FindGameObjectWithTag(Utils.PLAYER_TAG).GetComponent<PlayerInput>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -14,12 +19,7 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update()
-    {       
-        if(Input.GetMouseButtonDown(0)) 
-        {
-            Vector3 mousePosition = Utils.GetMouseWorldPosition();
-            map.TileGrid.GetXandY(mousePosition, out int x, out int y);
-            map.PopUpTiles(map.SearchOneTile(x, y));        
-        }
-    } 
+    {
+        player.Interact();
+    }
 }

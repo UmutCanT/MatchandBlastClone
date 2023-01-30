@@ -5,7 +5,9 @@ using UnityEngine;
 
 public static class Utils
 {
-    public static string CAMERA_TAG = "MainCamera";
+    public static readonly string CAMERA_TAG = "MainCamera";
+    public static readonly string MAP_TAG = "Map";
+    public static readonly string PLAYER_TAG = "Player";
 
     public static TextMesh CreateWorldText(Transform parent, string text, Vector3 localPos, int fontSize, Color color, TextAnchor textAnchor, TextAlignment textAlignment, int sortingOrder)
     {
