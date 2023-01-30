@@ -23,7 +23,19 @@ public class GridSpawner : MonoBehaviour
         if(Input.GetMouseButtonDown(0)) 
         {
             Vector3 mousePosition = Utils.GetMouseWorldPosition();
-            //visualsManager.PopUpTiles(map.TileGrid.GetGridObject(mousePosition));
+            map.TileGrid.GetXandY(mousePosition, out int x, out int y);
+            map.PopUpTiles(map.SearchOneTile(x, y));        
         }
-    }   
+    }
+    
+    IEnumerator Waiting(int x, int y)
+    {
+        map.PopUpTiles(map.SearchOneTile(x, y));
+        yield return new WaitForSeconds(2f);
+        map.FillEmptyTilePositions();
+        yield return new WaitForSeconds(2f);
+        map.SpawnNewTiles();
+        yield return new WaitForSeconds(2f);
+        visualsManager.UpdateVisuals();
+    }
 }

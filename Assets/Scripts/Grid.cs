@@ -39,9 +39,12 @@ public class Grid<TGridObject>
                 gridArray[x, y] = createdGridObject(this, x, y);
             }
         }
+        ShowDebug(false);       
+    }
 
-        bool showDebug = true;
-        if (showDebug)
+    public void ShowDebug(bool show)
+    {
+        if (show)
         {
             TextMesh[,] debugTextArray = new TextMesh[width, height];
 
@@ -49,7 +52,7 @@ public class Grid<TGridObject>
             {
                 for (int y = 0; y < gridArray.GetLength(1); y++)
                 {
-                    debugTextArray[x, y] = Utils.CreateWorldText(gridArray[x, y]?.ToString(), null, GetWorldPosition(x, y) + new Vector3(cellSize, cellSize) * .5f, 30, Color.white, TextAnchor.MiddleCenter);
+                    debugTextArray[x, y] = Utils.CreateWorldText(gridArray[x, y]?.ToString(), null, GetWorldPosition(x, y) + new Vector3(cellSize, cellSize) * .5f, 30, Color.black, TextAnchor.MiddleCenter);
                     debugTextArray[x, y].characterSize = .1f;
                     debugTextArray[x, y].fontSize = 30;
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
@@ -85,7 +88,7 @@ public class Grid<TGridObject>
         SetGridObject(x, y, value);
     }
 
-    void GetXandY(Vector3 worldPos, out int x, out int y)
+    public void GetXandY(Vector3 worldPos, out int x, out int y)
     {
         x = Mathf.FloorToInt((worldPos - gridOrigin).x/ cellSize);
         y = Mathf.FloorToInt((worldPos - gridOrigin).y/ cellSize);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -10,6 +11,7 @@ public class Map: MonoBehaviour
     public event EventHandler OnGemGridPositionDestroyed;
     public event EventHandler<OnNewGemGridSpawnedEventArgs> OnNewGemGridSpawned;
     public event EventHandler<OnLevelSetEventArgs> OnLevelSet;
+    public event Action OnPopUpFinished, OnFillTileFinish, OnTileSpawnFinish, OnCheckFinish;
 
     public class OnNewGemGridSpawnedEventArgs : EventArgs
     {
@@ -31,8 +33,25 @@ public class Map: MonoBehaviour
     int sameColorCount = 0;
     List<TilePosition> sameColorsList;
     List<TilePosition> noSameNeighbor;
+    bool hasPair = false;
 
     public Grid<TilePosition> TileGrid { get => tilePositionGrid; }
+
+    void OnEnable()
+    {
+        OnPopUpFinished += FillEmptyTilePositions;
+        OnPopUpFinished += ClearSearch;
+        OnFillTileFinish += SpawnNewTiles;
+        OnTileSpawnFinish += CheckAllTiles;
+    }
+
+    void OnDisable()
+    {
+        OnPopUpFinished -= FillEmptyTilePositions;
+        OnPopUpFinished -= ClearSearch;
+        OnFillTileFinish -= SpawnNewTiles;
+        OnTileSpawnFinish -= CheckAllTiles;
+    }
 
     public void CreateMap(int width, int height, float cellSize, Vector3 gridOrigin)
     {
@@ -53,6 +72,7 @@ public class Map: MonoBehaviour
             }
         }
         CheckAllTiles();
+        TileGrid.ShowDebug(false);
         OnLevelSet?.Invoke(this, new OnLevelSetEventArgs { tilePositionGrid = tilePositionGrid });
     }  
     
@@ -67,9 +87,7 @@ public class Map: MonoBehaviour
                 {
                     TileTemplate tileTemplate = tileTemplates[Random.Range(0, tileTemplates.Length)];
                     Tile tile = new Tile(tileTemplate, x, y);
-
                     tilePosition.SetTile(tile);
-
                     OnNewGemGridSpawned?.Invoke(tile, new OnNewGemGridSpawnedEventArgs
                     {
                         tile = tile,
@@ -78,6 +96,8 @@ public class Map: MonoBehaviour
                 }
             }
         }
+        OnTileSpawnFinish();
+        OnCheckFinish();
     }
 
     public void FillEmptyTilePositions()
@@ -97,7 +117,7 @@ public class Map: MonoBehaviour
                         {
                             tilePosition.Tile.SetXandY(x, i);
                             nextTilePosition.SetTile(tilePosition.Tile);
-                            tilePosition.PopTile();
+                            tilePosition.ClearPosition();
 
                             tilePosition = nextTilePosition;
                         }
@@ -110,9 +130,10 @@ public class Map: MonoBehaviour
                 }
             }
         }
+        OnFillTileFinish();
     }
 
-    void CheckAllTiles()
+    public void CheckAllTiles()
     {
         for (int x = 0; x < gridWidth; x++)
         {            
@@ -121,14 +142,14 @@ public class Map: MonoBehaviour
                 if (Searchable(x, y))
                 {
                     SearchNeighbors(x, y);
-                                        
+                    hasPair = sameColorCount > 0 ? true : false;
                     if (sameColorCount > 0)
-                    {                        
+                    {                      
                         ListOfTilesStateDecider(sameColorCount, sameColorsList);
                     }                    
                     else
                     {
-                        noSameNeighbor.Add(tilePositionGrid.GetGridObject(x, y));
+                        noSameNeighbor.Add(TileGrid.GetGridObject(x, y));
                     }
                     sameColorsList.Clear();
                     sameColorCount = 0;
@@ -136,7 +157,18 @@ public class Map: MonoBehaviour
             }
         }
         ChangeListofTilesState(noSameNeighbor, TileStates.None);
+        noSameNeighbor.Clear();
         ClearSearch();
+
+        if(!hasPair) {
+            
+            ShuffleTiles();
+        }
+    }
+
+    private void ShuffleTiles()
+    {
+        CheckAllTiles();
     }
 
     public void ClearSearch()
@@ -145,7 +177,7 @@ public class Map: MonoBehaviour
         {
             for (int y = 0; y < gridHeight; y++)
             {
-                tilePositionGrid.GetGridObject(x, y).Searched= false;
+                tilePositionGrid.GetGridObject(x, y).Searched= false;               
             }
         }
 
@@ -175,6 +207,28 @@ public class Map: MonoBehaviour
         }
     }
 
+    public List<TilePosition> SearchOneTile(int x, int y)
+    {
+        SearchNeighbors(x, y);
+        return sameColorsList;
+    }
+
+    public void PopUpTiles(List<TilePosition> tilePositions)
+    {
+        foreach (TilePosition tilePos in tilePositions)
+        {
+            if (tilePos.HasTile())
+            {
+                tilePos.PopTile();
+                OnGemGridPositionDestroyed?.Invoke(tilePos, EventArgs.Empty);
+                tilePos.ClearPosition();
+            }
+        }
+        sameColorsList.Clear();
+        sameColorCount = 0;
+        OnPopUpFinished();
+    }
+
     public void SearchNeighbors(int x, int y)
     {       
         TileTemplate temp = GetTemplate(x,y);
@@ -184,8 +238,6 @@ public class Map: MonoBehaviour
         if (Searchable(x + 1, y))
         {
             TileTemplate nextTemplate = GetTemplate(x +1, y);
-            Debug.Log(temp + " == " + nextTemplate);
-
             if (temp == nextTemplate)
             {
                 sameColorCount++;
@@ -197,9 +249,7 @@ public class Map: MonoBehaviour
 
         if (Searchable(x - 1, y))
         {
-            TileTemplate nextTemplate = GetTemplate(x - 1, y);
-            Debug.Log(temp + " == "  + nextTemplate);
-
+            TileTemplate nextTemplate = GetTemplate(x - 1, y);         
             if (temp == nextTemplate)
             {
                 sameColorCount++;
@@ -211,8 +261,7 @@ public class Map: MonoBehaviour
 
         if (Searchable(x , y + 1))
         {
-            TileTemplate nextTemplate = GetTemplate(x, y + 1);
-            Debug.Log(temp + " == " + nextTemplate);
+            TileTemplate nextTemplate = GetTemplate(x, y + 1);            
             if (temp == nextTemplate)
             {
                 sameColorCount++;
@@ -224,8 +273,7 @@ public class Map: MonoBehaviour
 
         if (Searchable(x, y - 1))
         {
-            TileTemplate nextTemplate = GetTemplate(x, y - 1);
-            Debug.Log(temp + " == " + nextTemplate);
+            TileTemplate nextTemplate = GetTemplate(x, y - 1);            
             if (temp == nextTemplate)
             {
                 sameColorCount++;
@@ -233,14 +281,12 @@ public class Map: MonoBehaviour
                 tilePositionGrid.GetGridObject(x, y - 1).Searched = true;
                 SearchNeighbors(x, y - 1);
             }
-        }
-
-        Debug.Log(sameColorCount);
+        }             
     }
 
     bool Searchable(int x, int y)
     {
-        if (x < 0 || x >= gridWidth || y < 0 || y >= gridHeight)
+        if (OutofBounds(x, y))
         {
             return false;
         }
@@ -250,14 +296,26 @@ public class Map: MonoBehaviour
         }
     }
 
+    bool OutofBounds(int x, int y)
+    {
+        if (x < 0 || x >= gridWidth || y < 0 || y >= gridHeight)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     TileTemplate GetTemplate(int x, int y)
     {
-        //if (!Searchable(x, y)) return null;
+        if (OutofBounds(x, y)) return null;
         
         TilePosition tilePosition = tilePositionGrid.GetGridObject(x ,y);
 
         if (tilePosition.Tile == null) return null;
 
         return tilePosition.Tile.TileTemp;
-    }
+    }  
 }

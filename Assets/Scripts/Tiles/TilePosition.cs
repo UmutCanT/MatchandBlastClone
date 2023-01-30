@@ -36,8 +36,19 @@ public class TilePosition
 
     public void PopTile()
     {
+        tile?.PopTile();
+        grid.TriggerGridObjectChanged(x, y);
+    }
+
+    public void ClearPosition()
+    {
         tile = null;
-        searched= false;
+        searched = false;
+    }
+
+    public override string ToString()
+    {
+        return tile?.ToString();
     }
 
     public bool HasTile() => tile != null;
@@ -47,7 +58,7 @@ public class TilePosition
 
 public class Tile
 {
-    public event EventHandler OnPopped;
+    public event EventHandler OnPopped;   
 
     private TileTemplate tileTemp;
     private int x; 
@@ -61,12 +72,11 @@ public class Tile
         this.tileTemp = tileTemp;
         this.x = x;
         this.y = y;
-
+        tileState= TileStates.None;
         isPopped = false;
     }
 
     public TileTemplate TileTemp { get => tileTemp; set => tileTemp = value; }
-
     public TileStates TileState { get => tileState; set => tileState = value; }
 
     public Vector3 GetWorldPosition()
@@ -84,5 +94,9 @@ public class Tile
     {
         isPopped= true;
         OnPopped?.Invoke(this, EventArgs.Empty);
+    }
+    public override string ToString()
+    {
+        return tileState.ToString();
     }
 }

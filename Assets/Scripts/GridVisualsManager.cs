@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,13 +10,24 @@ public class GridVisualsManager : MonoBehaviour
     [SerializeField] Transform prefabVisualNode;
     [SerializeField] Map map;
     CamManager camManager;
-    Grid<TilePosition> grid;
     private Dictionary<Tile, TileVisual> tileGridDictionary;
+    float spawnPosY;
 
     private void Awake()
     {
         map.OnLevelSet += InitializeVisuals;
         camManager = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CamManager>();
+    }
+
+
+    private void OnEnable()
+    {
+        map.OnCheckFinish += UpdateVisuals;
+    }
+
+    private void OnDisable()
+    {
+        map.OnCheckFinish -= UpdateVisuals;
     }
 
     private void InitializeVisuals(object sender, Map.OnLevelSetEventArgs e)
@@ -28,7 +38,7 @@ public class GridVisualsManager : MonoBehaviour
     public void Initialize(Map map, Grid<TilePosition> grid)
     {
         this.map = map;
-        this.grid = grid;
+        spawnPosY = grid.Height + .5f;
 
         camManager.changeCamPosition(grid.Width, grid.Height);
         map.OnGemGridPositionDestroyed += RemoveTileFromDictionary;
@@ -44,7 +54,7 @@ public class GridVisualsManager : MonoBehaviour
                 Tile tile = tilePosition.Tile;
 
                 Vector3 position = grid.GetWorldPosition(x, y);
-                position = new Vector3(position.x, 12);
+                position = new Vector3(position.x, spawnPosY);
 
                 Transform tileGridVisualTransform = Instantiate(prefabVisualNode, position, Quaternion.identity);
                 tileGridVisualTransform.GetComponentInChildren<SpriteRenderer>().sprite = tile.TileTemp.GetSprite(tile.TileState);
@@ -57,24 +67,24 @@ public class GridVisualsManager : MonoBehaviour
                 //Instantiate(pfBackgroundGridVisual, grid.GetWorldPosition(x, y), Quaternion.identity);
             }
         }
-        //UpdateVisuals();
+        //UpdateVisualsPositions();      
     }
 
     private void InstantiateVisual(object sender, Map.OnNewGemGridSpawnedEventArgs e)
     {
         Vector3 position = e.tilePosition.GetWorldPosition();
-        position = new Vector3(position.x, 12);
-
+        position = new Vector3(position.x, spawnPosY);
+        
         Transform tileGridVisualTransform = Instantiate(prefabVisualNode, position, Quaternion.identity);
         tileGridVisualTransform.GetComponentInChildren<SpriteRenderer>().sprite = e.tile.TileTemp.GetSprite(e.tile.TileState);
 
         TileVisual tileVisual = new TileVisual(tileGridVisualTransform, e.tile);
+        tileGridDictionary[e.tile] = tileVisual;
     }
 
     private void RemoveTileFromDictionary(object sender, EventArgs e)
     {
-        TilePosition tilePosition = sender as TilePosition;
-        if (tilePosition != null && tilePosition.Tile != null)
+        if (sender is TilePosition tilePosition && tilePosition.Tile != null)
         {
             tileGridDictionary.Remove(tilePosition.Tile);
         }
@@ -82,15 +92,22 @@ public class GridVisualsManager : MonoBehaviour
 
     private void Update()
     {
-        UpdateVisuals();
+        UpdateVisualsPositions();
     }
 
-    private void UpdateVisuals()
+    private void UpdateVisualsPositions()
     {
         foreach (Tile tile in tileGridDictionary.Keys)
         {
-            tileGridDictionary[tile].Update();
-            //StartCoroutine(tileGridDictionary[tile].UpdateMov());
+            tileGridDictionary[tile].Update();          
+        }
+    }
+
+    public void UpdateVisuals()
+    {
+        foreach (Tile tile in tileGridDictionary.Keys)
+        {
+            tileGridDictionary[tile].UpdateSprite(tile.TileTemp.GetSprite(tile.TileState));           
         }
     }
 
@@ -98,6 +115,7 @@ public class GridVisualsManager : MonoBehaviour
     {
         private Transform transform;
         private Tile tile;
+        readonly float moveSpeed = 2.2f;
 
         public TileVisual(Transform transform, Tile tile)
         {
@@ -107,18 +125,21 @@ public class GridVisualsManager : MonoBehaviour
             tile.OnPopped += DestroyTileVisual;
         }
 
-        private void DestroyTileVisual(object sender, System.EventArgs e)
+        private void DestroyTileVisual(object sender, EventArgs e)
         {
-            //transform.GetComponent<Animation>().Play();
-            Destroy(transform.gameObject, 1f);
+            Destroy(transform.gameObject);
+        }
+
+        public void UpdateSprite(Sprite sprite)
+        {
+            transform.GetComponentInChildren<SpriteRenderer>().sprite = sprite;
         }
 
         public void Update()
         {
             Vector3 targetPos = tile.GetWorldPosition();
-            Vector3 moveDir  = targetPos - transform.position;
-            float moveSpeed = 2f;
-            transform.position += moveDir * moveSpeed * Time.deltaTime;
+            Vector3 moveDir  = targetPos - transform.position;           
+            transform.position += moveSpeed * Time.deltaTime * moveDir;
         }
 
         public IEnumerator UpdateMov()
