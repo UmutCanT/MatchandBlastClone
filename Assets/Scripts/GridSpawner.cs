@@ -1,31 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using UnityEngine.WSA;
 
 public class GridSpawner : MonoBehaviour
 {
+    [SerializeField] GridVisualsManager visualsManager;
     private Map map;
-    [SerializeField] TileTemplate blue;
-    [SerializeField] TileTemplate green;
-    [SerializeField] TileTemplate pink;
-    [SerializeField] TileTemplate purple;
-    [SerializeField] TileTemplate yellow;
-    [SerializeField] TileTemplate red;
+
+    private void Awake()
+    {
+        map = GetComponent<Map>();
+    }
 
     // Start is called before the first frame update
     void Start()
-    {      
-        map = new Map(20,10,10f,Vector3.zero);
+    {
+        map.CreateMap(3, 3, 1f, Vector3.zero);
     }
 
     private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
+    {       
+        if(Input.GetMouseButtonDown(0)) 
         {
-            Vector3 worldPos = Utils.GetMouseWorldPosition();
-            map.SetMapTile(worldPos, TileTypes.Red);            
+            Vector3 mousePosition = Utils.GetMouseWorldPosition();
+            map.TileGrid.GetXandY(mousePosition, out int x, out int y);
+            map.PopUpTiles(map.SearchOneTile(x, y));        
         }
-    }
+    } 
 }

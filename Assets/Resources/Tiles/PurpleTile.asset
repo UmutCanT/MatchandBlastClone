@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: PurpleTile
   m_EditorClassIdentifier: 
   tileName: PurpleTile
-  tileType: 5
+  tileType: 3
   tileSprite: {fileID: 21300000, guid: 66930579fa0fc2248983f99543143749, type: 3}
-  bonusSprites:
-  - {fileID: 21300000, guid: 592d1764c380e7c4999a8d30304eb9c4, type: 3}
-  - {fileID: 21300000, guid: 8238ff87c7338ce469eb409e007a8254, type: 3}
-  - {fileID: 21300000, guid: c1ca1f794a771014894498299ddd09d3, type: 3}
+  spriteA: {fileID: 21300000, guid: 592d1764c380e7c4999a8d30304eb9c4, type: 3}
+  spriteB: {fileID: 21300000, guid: 8238ff87c7338ce469eb409e007a8254, type: 3}
+  spriteC: {fileID: 21300000, guid: c1ca1f794a771014894498299ddd09d3, type: 3}

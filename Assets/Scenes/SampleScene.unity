@@ -123,6 +123,60 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &561538656
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 561538657}
+  - component: {fileID: 561538658}
+  m_Layer: 0
+  m_Name: Visuals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &561538657
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561538656}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 0, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &561538658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561538656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9c32f0c17a5074792a99217eb547d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileTemplates:
+  - {fileID: 11400000, guid: 3231a8cb7c569114caf870b7a7567a7b, type: 2}
+  - {fileID: 11400000, guid: 1c590fd7c29e7214cb29ea3e92f735a7, type: 2}
+  - {fileID: 11400000, guid: 27b21e8e1da42f14fbeeaf90ed93e4ff, type: 2}
+  - {fileID: 11400000, guid: 12f40b874fb78e84abbc38c18555499c, type: 2}
+  - {fileID: 11400000, guid: 46fe59afdb40eea47bbf7ceeb420f933, type: 2}
+  - {fileID: 11400000, guid: 1a049dffc57bb8246995b57695ff10a8, type: 2}
+  prefabVisualNode: {fileID: 1509788556401632063, guid: 48a17bc15c6ea4d46a593d9366493094,
+    type: 3}
+  map: {fileID: 1798788479}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,6 +282,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -270,7 +325,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 60
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -301,6 +356,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 786fdf8381fddc8498be9344fc8cece6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camTransform: {fileID: 963194228}
 --- !u!1 &1798788476
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,6 +379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1798788477}
   - component: {fileID: 1798788478}
+  - component: {fileID: 1798788479}
   m_Layer: 0
   m_Name: GridSpawner
   m_TagString: Untagged
@@ -345,9 +414,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ad518e56506393428e533834d98583b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blue: {fileID: 11400000, guid: 3231a8cb7c569114caf870b7a7567a7b, type: 2}
-  green: {fileID: 11400000, guid: 1c590fd7c29e7214cb29ea3e92f735a7, type: 2}
-  pink: {fileID: 11400000, guid: 27b21e8e1da42f14fbeeaf90ed93e4ff, type: 2}
-  purple: {fileID: 11400000, guid: 12f40b874fb78e84abbc38c18555499c, type: 2}
-  yellow: {fileID: 11400000, guid: 1a049dffc57bb8246995b57695ff10a8, type: 2}
-  red: {fileID: 11400000, guid: 46fe59afdb40eea47bbf7ceeb420f933, type: 2}
+  visualsManager: {fileID: 561538658}
+--- !u!114 &1798788479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798788476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9468a20b8099f264bace1e35a4b0c370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileTemplates:
+  - {fileID: 11400000, guid: 3231a8cb7c569114caf870b7a7567a7b, type: 2}
+  - {fileID: 11400000, guid: 1c590fd7c29e7214cb29ea3e92f735a7, type: 2}
+  - {fileID: 11400000, guid: 27b21e8e1da42f14fbeeaf90ed93e4ff, type: 2}
+  - {fileID: 11400000, guid: 12f40b874fb78e84abbc38c18555499c, type: 2}
+  - {fileID: 11400000, guid: 46fe59afdb40eea47bbf7ceeb420f933, type: 2}
+  - {fileID: 11400000, guid: 1a049dffc57bb8246995b57695ff10a8, type: 2}

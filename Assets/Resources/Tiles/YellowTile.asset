@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: YellowTile
   m_EditorClassIdentifier: 
   tileName: YellowTile
-  tileType: 7
+  tileType: 5
   tileSprite: {fileID: 21300000, guid: 6b66e934528b8df4b9a64d4e5cdd918f, type: 3}
-  bonusSprites:
-  - {fileID: 21300000, guid: ad9063bb5991df948a026bc884922a8c, type: 3}
-  - {fileID: 21300000, guid: ac0a855a0770e0f41941595fe95c8680, type: 3}
-  - {fileID: 21300000, guid: e4681fd62b40b784d8380876c3751e46, type: 3}
+  spriteA: {fileID: 21300000, guid: ad9063bb5991df948a026bc884922a8c, type: 3}
+  spriteB: {fileID: 21300000, guid: ac0a855a0770e0f41941595fe95c8680, type: 3}
+  spriteC: {fileID: 21300000, guid: e4681fd62b40b784d8380876c3751e46, type: 3}
