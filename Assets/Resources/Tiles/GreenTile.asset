@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89cd196d60e3b71458f24543de135af3, type: 3}
   m_Name: GreenTile
   m_EditorClassIdentifier: 
-  tileName: GreenTile
-  tileType: 1
-  tileSprite: {fileID: 21300000, guid: 3fd4e5ff0d7977f4b96d57a5f870235d, type: 3}
-  spriteA: {fileID: 21300000, guid: 2b81b8493cd4cfb4ebcb0bf70e341d8b, type: 3}
-  spriteB: {fileID: 21300000, guid: 005b128f3972d184591192fec775ff68, type: 3}
-  spriteC: {fileID: 21300000, guid: 9691911f1f5930e438f3aac0c131b98c, type: 3}
+  tileSprite: {fileID: 21300000, guid: babf5cf2b4729ad47a8af6ce5ae455f5, type: 3}
+  spriteA: {fileID: 21300000, guid: f92b4bcb9cad0224089454c308b7db48, type: 3}
+  spriteB: {fileID: 21300000, guid: 933307e18bc677644aae8045426ed7f5, type: 3}
+  spriteC: {fileID: 21300000, guid: c50815c87fd632f48b26a32e084dc80e, type: 3}

@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89cd196d60e3b71458f24543de135af3, type: 3}
   m_Name: PurpleTile
   m_EditorClassIdentifier: 
-  tileName: PurpleTile
-  tileType: 3
-  tileSprite: {fileID: 21300000, guid: 66930579fa0fc2248983f99543143749, type: 3}
-  spriteA: {fileID: 21300000, guid: 592d1764c380e7c4999a8d30304eb9c4, type: 3}
-  spriteB: {fileID: 21300000, guid: 8238ff87c7338ce469eb409e007a8254, type: 3}
-  spriteC: {fileID: 21300000, guid: c1ca1f794a771014894498299ddd09d3, type: 3}
+  tileSprite: {fileID: 21300000, guid: 9db6b27b2f5d72b41b482c81a22f266a, type: 3}
+  spriteA: {fileID: 21300000, guid: 12b5cfdc26f12f041991ea6817b808c2, type: 3}
+  spriteB: {fileID: 21300000, guid: de5f46b5dd3902f43849b5d66683ee6b, type: 3}
+  spriteC: {fileID: 21300000, guid: 1e652ff6de5a2f941b20f508520a0ddf, type: 3}

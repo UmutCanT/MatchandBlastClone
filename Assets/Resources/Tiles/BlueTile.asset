@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89cd196d60e3b71458f24543de135af3, type: 3}
   m_Name: BlueTile
   m_EditorClassIdentifier: 
-  tileName: BlueTile
-  tileType: 0
-  tileSprite: {fileID: 21300000, guid: 4ef0cec1f764b1f4e842498b2a48bab0, type: 3}
-  spriteA: {fileID: 21300000, guid: 40e52051de1984e499c92ba17fea5cc1, type: 3}
-  spriteB: {fileID: 21300000, guid: ed1e0d51152a2fc499b89c2626efd1d5, type: 3}
-  spriteC: {fileID: 21300000, guid: cfd3016752d9da04cac30c53deb35ddd, type: 3}
+  tileSprite: {fileID: 21300000, guid: b91cc6b1ea28bd747bd48ae157374842, type: 3}
+  spriteA: {fileID: 21300000, guid: 716ac58ee54084f4585b718c4571fd1c, type: 3}
+  spriteB: {fileID: 21300000, guid: ea5c9a1ddecb42d4b90cc99191f3cd7f, type: 3}
+  spriteC: {fileID: 21300000, guid: ae8d2cbc03bd91a4f8db71a9f6124456, type: 3}
